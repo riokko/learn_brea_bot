@@ -50,9 +50,9 @@ def precalculator(part):
     return part
 
 
-# 10 + 2 * 3 - 4 + 1 / 2
+# 10 + 2 * 3 - 4 + 1 / 2 =
 
 if __name__ == "__main__":
     
-    print(calculator("3 / 2 + 10 + 2 * 3 * 2.5 - 4 + 1 / 2"))
+    print(calculator("3 + 2"))
     print(calculator("2 + 1 - 3 / 10"))

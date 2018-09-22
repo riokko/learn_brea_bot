@@ -3,6 +3,7 @@ import logging
 import settings
 import ephem
 from datetime import datetime
+from func_hard_calc import calculator, precalculator
 
 logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s',
                     level=logging.INFO,
@@ -72,7 +73,9 @@ def start_calc(bot,update):
 def calculate(bot,update):
     user_phrase = update.message.text
     user_phrase = user_phrase.replace("=","")
-
+    user_phrase = round(calculator(user_phrase), 2)
+    update.message.reply_text(user_phrase)
+'''
     if "+" in user_phrase:
         user_phrase = user_phrase.split("+")
         calculation = float(user_phrase[0]) + float(user_phrase[1])
@@ -89,6 +92,7 @@ def calculate(bot,update):
         calculation = float(user_phrase[0]) * float(user_phrase[1])
 
     update.message.reply_text(calculation)
+'''
 
 def main():
     mybot = Updater(settings.API_KEY, request_kwargs=settings.PROXY)

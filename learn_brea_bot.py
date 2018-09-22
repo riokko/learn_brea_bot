@@ -4,6 +4,7 @@ import settings
 import ephem
 from datetime import datetime
 from func_hard_calc import calculator, precalculator
+from func_word_calc import digits, word_calc
 
 logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s',
                     level=logging.INFO,
@@ -67,8 +68,16 @@ def start_calc(bot,update):
     expression = update.message.text
     if expression[-1] == "=":
         calculate(bot,update)
+    elif expression[0:7] == "сколько":
+        word_calculation(bot,update)
     else:
         return talk_to_me(bot,update)
+
+def word_calculation(bot,update):
+    user_phrase = update.message.text
+    user_phrase = word_calc(user_phrase)
+    user_phrase = round(calculator(user_phrase), 2)
+    update.message.reply_text(user_phrase)
 
 def calculate(bot,update):
     user_phrase = update.message.text

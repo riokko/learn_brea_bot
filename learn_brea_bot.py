@@ -1,9 +1,10 @@
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
-from handlers import *
-from calculation import *
-from astronomy import *
+from telegram.ext import Updater, CommandHandler, MessageHandler, RegexHandler, Filters
+
 import settings
 
+from astronomy import *
+from calculation import *
+from handlers import *
 
 logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s',
                     level=logging.INFO,
@@ -16,12 +17,18 @@ def main():
     logging.info('Бот запускается')
 
     dp = mybot.dispatcher
-    dp.add_handler(CommandHandler("start", greet_user))
-    dp.add_handler(MessageHandler(Filters.text, start_calc))
+    dp.add_handler(CommandHandler("start", greet_user, pass_user_data=True))
 #    dp.add_handler(MessageHandler(Filters.text, talk_to_me))
-    dp.add_handler(CommandHandler("planet", planet_ephem))
-    dp.add_handler(CommandHandler("wordcount", wordcount))
+    dp.add_handler(CommandHandler("planet", planet_ephem, pass_user_data=True))
+    dp.add_handler(CommandHandler("wordcount", wordcount, pass_user_data=True))
+    dp.add_handler(CommandHandler("fullmoon", next_fullmoon, pass_user_data=True))
+    dp.add_handler(CommandHandler("cat", send_cat_picture, pass_user_data=True))
+    dp.add_handler(RegexHandler('^(Прислать котика)$', send_cat_picture, pass_user_data=True))
+    dp.add_handler(RegexHandler('^(Сменить аватарку)$', change_avatar, pass_user_data=True))
 
+    dp.add_handler(MessageHandler(Filters.contact, get_contact, pass_user_data=True))
+    dp.add_handler(MessageHandler(Filters.location, get_location, pass_user_data=True))
+    dp.add_handler(MessageHandler(Filters.text, start_calc, pass_user_data=True))
 
     mybot.start_polling()
     mybot.idle()
